@@ -25,7 +25,7 @@ public class LabelErrorHandler<T> implements ErrorHandler<T> {
         String message = constraintViolations.stream()
                 .map(ConstraintViolation::getMessage)
                 .reduce("", (accumulated, violationMessage) -> accumulated + String.format("%s\n", violationMessage));
-        System.out.println( label + " " + message);
+        System.out.println( label + " [" + message + "]");
         label.setText(message);
     }
 }

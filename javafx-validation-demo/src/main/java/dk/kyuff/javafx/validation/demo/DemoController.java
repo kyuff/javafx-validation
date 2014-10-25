@@ -30,6 +30,12 @@ public class DemoController implements Initializable {
     public TextField lastName;
     @FXML
     public Label lastNameErrors;
+    @FXML
+    public Label titleLabel;
+    @FXML
+    public TextField title;
+    @FXML
+    public Label titleErrors;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -41,11 +47,13 @@ public class DemoController implements Initializable {
                 .bind(new LabelErrorHandler<>(lastNameErrors), pojo -> {
                     pojo.getLastName();
                     pojo.getTitle();
-                });
+                })
+                .bind(new LabelErrorHandler<>(titleErrors), Person::getTitle);
 
         new Mapper<Person>()
                 .map(firstName, firstName.textProperty(), person::setFirstName)
                 .map(lastName, lastName.textProperty(), person::setLastName)
+                .map(title, title.textProperty(), person::setTitle)
                 .setValidator(validator)
                 .setEntity(person);
 
