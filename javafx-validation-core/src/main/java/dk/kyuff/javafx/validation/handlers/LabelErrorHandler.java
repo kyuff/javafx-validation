@@ -1,11 +1,10 @@
-package dk.kyuff.javafx.validation;
+package dk.kyuff.javafx.validation.handlers;
 
+import dk.kyuff.javafx.validation.ErrorHandler;
 import javafx.scene.control.Label;
 
 import javax.validation.ConstraintViolation;
 import java.util.Set;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
 /**
  * User: swi
@@ -25,7 +24,6 @@ public class LabelErrorHandler<T> implements ErrorHandler<T> {
         String message = constraintViolations.stream()
                 .map(ConstraintViolation::getMessage)
                 .reduce("", (accumulated, violationMessage) -> accumulated + String.format("%s\n", violationMessage));
-        System.out.println( label + " [" + message + "]");
         label.setText(message);
     }
 }

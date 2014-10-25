@@ -1,9 +1,10 @@
 package dk.kyuff.javafx.validation.demo;
 
-import dk.kyuff.javafx.validation.ErrorHandler;
 import dk.kyuff.javafx.validation.FXValidator;
-import dk.kyuff.javafx.validation.LabelErrorHandler;
+import dk.kyuff.javafx.validation.handlers.CombiningErrorHandler;
+import dk.kyuff.javafx.validation.handlers.LabelErrorHandler;
 import dk.kyuff.javafx.validation.Mapper;
+import dk.kyuff.javafx.validation.handlers.StylingErrorHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
@@ -31,32 +32,37 @@ public class DemoController implements Initializable {
     @FXML
     public Label lastNameErrors;
     @FXML
-    public Label titleLabel;
+    public Label phoneLabel;
     @FXML
-    public TextField title;
+    public TextField phone;
     @FXML
-    public Label titleErrors;
+    public Label phoneErrors;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
         Person person = createPerson();
 
+        firstName.textProperty().setValue(person.getFirstName());
+        lastName.textProperty().setValue(person.getLastName());
+        phone.textProperty().setValue(person.getPhone());
+
         FXValidator<Person> validator = new FXValidator<>(Person.class)
-                .bind(new LabelErrorHandler<>(firstNameErrors), Person::getFirstName)
+                .bind(new StylingErrorHandler<>(firstName, "error"), Person::getFirstName)
                 .bind(new LabelErrorHandler<>(lastNameErrors), pojo -> {
                     pojo.getLastName();
-                    pojo.getTitle();
+                    pojo.getPhone();
                 })
-                .bind(new LabelErrorHandler<>(titleErrors), Person::getTitle);
+                .bind(new CombiningErrorHandler<>(
+                        new StylingErrorHandler<>(phone, "error"),
+                        new LabelErrorHandler<>(phoneErrors)
+                ), Person::getPhone);
 
-        new Mapper<Person>()
+        new Mapper<>(person)
                 .map(firstName, firstName.textProperty(), person::setFirstName)
                 .map(lastName, lastName.textProperty(), person::setLastName)
-                .map(title, title.textProperty(), person::setTitle)
-                .setValidator(validator)
-                .setEntity(person);
-
+                .map(phone, phone.textProperty(), person::setPhone)
+                .setValidator(validator);
 
     }
 
@@ -64,6 +70,7 @@ public class DemoController implements Initializable {
         Person person = new Person();
         person.setFirstName("Hans Erik");
         person.setLastName("Hansen");
+        person.setPhone("123-4567");
         return person;
     }
 }

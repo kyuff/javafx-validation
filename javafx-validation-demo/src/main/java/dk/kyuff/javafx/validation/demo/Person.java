@@ -1,6 +1,7 @@
 package dk.kyuff.javafx.validation.demo;
 
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 /**
@@ -15,8 +16,9 @@ public class Person {
     private String firstName;
     @Size(min = 3, max = 7, message = "wrong size")
     private String lastName;
-    @Size(max = 3, message = "too long")
-    private String title;
+    @Size(max = 8, message = "too long")
+    @Pattern(regexp = "\\d{3}-\\d{4}", message = "match xxx-xxxx")
+    private String phone;
 
     public String getFirstName() {
         return firstName;
@@ -34,11 +36,11 @@ public class Person {
         this.lastName = lastName;
     }
 
-    public String getTitle() {
-        return title;
+    public String getPhone() {
+        return phone;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 }

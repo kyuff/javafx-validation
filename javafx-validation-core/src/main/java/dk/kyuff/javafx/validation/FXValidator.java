@@ -20,15 +20,13 @@ public class FXValidator<T> {
 
     private Class<T> validatedClass;
     private T proxy;
-    private List<String> usedFields;
-    private Map<String, List<ErrorHandler<T>>> handlers;
     private Validator validator;
+    private ErrorHandlerMap<T> map;
 
     public FXValidator(Class<T> validatedClass) {
         this.validatedClass = validatedClass;
-        this.handlers = new HashMap<>();
         this.proxy = createProxy();
-        this.usedFields = new ArrayList<>();
+        this.map = new ErrorHandlerMap<>();
 
         ValidatorFactory validatorFactory = Validation.buildDefaultValidatorFactory();
         this.validator = validatorFactory.getValidator();
@@ -42,15 +40,9 @@ public class FXValidator<T> {
      * @return the validator itself in order to allow a fluid pattern.
      */
     public FXValidator<T> bind(ErrorHandler<T> handler, Consumer<T> binder) {
-
-        usedFields.clear();
+        map.beginRecording(handler);
         binder.accept(proxy);
-        usedFields.forEach(field -> {
-            if (!handlers.containsKey(field)) {
-                handlers.put(field, new ArrayList<>());
-            }
-            handlers.get(field).add(handler);
-        });
+        map.endRecording();
         return this;
     }
 
@@ -62,7 +54,7 @@ public class FXValidator<T> {
             // TODO This needs to be a bit more complex.
             // So we can have a usecase with nested pojos, ie person.address.streetname
             String name = methodNameToPropertyName(method.getName());
-            usedFields.add(name);
+            map.addField(name);
             return methodProxy.invokeSuper(o, objects);
         });
         return (T) enhancer.create();
@@ -81,35 +73,23 @@ public class FXValidator<T> {
     }
 
     /**
-     * Execute all validations that have been configured
+     * Execute all handlers that have been configured.
+     * Those that are bound to a field with a violation will
+     * receive a non-empty violation set. The rest will get
+     * an empty set.
+     *
+     * @param entity the entity to validate.
      */
     public void validate(T entity) {
 
-        Set<ConstraintViolation<T>> violations = validator.validate(entity);
-        Map<String, Set<ConstraintViolation<T>>> sortedViolations = sortViolationsBasedOnFieldName(violations);
-        handlers.forEach((path, handlerList) -> {
-            Set<ConstraintViolation<T>> violationForPath = sortedViolations.get(path);
-            if (violationForPath == null) {
-                // The case with no violations on a particular field
-                violationForPath = new HashSet<>();
-            }
-            for(ErrorHandler<T> handler : handlerList) {
-                handler.handle(violationForPath);
-            }
+        Set<ConstraintViolation<T>> allViolations = validator.validate(entity);
+
+        Map<ErrorHandler<T>, Set<ConstraintViolation<T>>> sortedViolations = map.sort(allViolations);
+        sortedViolations.forEach((handler, violations) -> {
+            handler.handle(violations);
         });
 
-    }
 
-    private Map<String, Set<ConstraintViolation<T>>> sortViolationsBasedOnFieldName(Set<ConstraintViolation<T>> violations) {
-        Map<String, Set<ConstraintViolation<T>>> sortedViolations = new HashMap<>();
-        violations.forEach(violation -> {
-            String path = violation.getPropertyPath().toString();
-            if (!sortedViolations.containsKey(path)) {
-                sortedViolations.put(path, new HashSet<>());
-            }
-            sortedViolations.get(path).add(violation);
-        });
-        return sortedViolations;
     }
 
 }

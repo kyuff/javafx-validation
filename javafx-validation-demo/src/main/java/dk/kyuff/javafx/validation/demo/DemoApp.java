@@ -19,9 +19,10 @@ public class DemoApp extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("/fxml/demo-app.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/demo-app.fxml"));
 
         Scene scene = new Scene(root, 300, 275);
+        scene.getStylesheets().add("/stylesheet.css");
 
         stage.setTitle("FXML Validator Demo");
         stage.setScene(scene);

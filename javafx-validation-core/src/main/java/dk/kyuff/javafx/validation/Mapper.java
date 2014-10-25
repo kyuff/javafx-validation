@@ -15,6 +15,10 @@ public class Mapper<T> {
     FXValidator<T> validator;
     T entity;
 
+    public Mapper(T entity) {
+        this.entity = entity;
+    }
+
     public <O> Mapper<T> map(Node node, ObservableValue<O> property, Consumer<O> consumer) {
         node.focusedProperty().addListener((observable, oldValue, focused) -> {
             if (!focused) {
@@ -36,7 +40,4 @@ public class Mapper<T> {
         return this;
     }
 
-    public void setEntity(T entity) {
-        this.entity = entity;
-    }
 }
