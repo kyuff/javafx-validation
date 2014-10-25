@@ -1,6 +1,6 @@
-package dk.kyuff.javafx.validation.handlers;
+package dk.kyuff.javafx.validation.javax.handlers;
 
-import dk.kyuff.javafx.validation.ErrorHandler;
+import dk.kyuff.javafx.validation.javax.ErrorHandler;
 
 import javax.validation.ConstraintViolation;
 import java.util.Set;
@@ -14,6 +14,7 @@ public class CombiningErrorHandler<T> implements ErrorHandler<T> {
 
     private ErrorHandler<T>[] handlers;
 
+    @SafeVarargs
     public CombiningErrorHandler(ErrorHandler<T>... handlers) {
         this.handlers = handlers;
     }

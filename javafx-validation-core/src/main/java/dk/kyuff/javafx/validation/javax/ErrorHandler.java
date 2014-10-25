@@ -1,4 +1,4 @@
-package dk.kyuff.javafx.validation;
+package dk.kyuff.javafx.validation.javax;
 
 import javax.validation.ConstraintViolation;
 import java.util.Set;

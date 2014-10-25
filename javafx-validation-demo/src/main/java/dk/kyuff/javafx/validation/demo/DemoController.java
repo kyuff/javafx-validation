@@ -1,16 +1,19 @@
 package dk.kyuff.javafx.validation.demo;
 
 import dk.kyuff.javafx.validation.FXValidator;
-import dk.kyuff.javafx.validation.handlers.CombiningErrorHandler;
-import dk.kyuff.javafx.validation.handlers.LabelErrorHandler;
+import dk.kyuff.javafx.validation.javax.JavaxValidator;
+import dk.kyuff.javafx.validation.javax.handlers.CombiningErrorHandler;
+import dk.kyuff.javafx.validation.javax.handlers.LabelErrorHandler;
 import dk.kyuff.javafx.validation.Mapper;
-import dk.kyuff.javafx.validation.handlers.StylingErrorHandler;
+import dk.kyuff.javafx.validation.javax.handlers.StylingErrorHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 
 import java.net.URL;
+import java.util.Random;
 import java.util.ResourceBundle;
 
 /**
@@ -37,17 +40,14 @@ public class DemoController implements Initializable {
     public TextField phone;
     @FXML
     public Label phoneErrors;
+    @FXML
+    public Button submit;
+    private FXValidator<Person> validator;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
-        Person person = createPerson();
-
-        firstName.textProperty().setValue(person.getFirstName());
-        lastName.textProperty().setValue(person.getLastName());
-        phone.textProperty().setValue(person.getPhone());
-
-        FXValidator<Person> validator = new FXValidator<>(Person.class)
+        validator = new JavaxValidator<>(Person.class)
                 .bind(new StylingErrorHandler<>(firstName, "error"), Person::getFirstName)
                 .bind(new LabelErrorHandler<>(lastNameErrors), pojo -> {
                     pojo.getLastName();
@@ -58,19 +58,40 @@ public class DemoController implements Initializable {
                         new LabelErrorHandler<>(phoneErrors)
                 ), Person::getPhone);
 
-        new Mapper<>(person)
-                .map(firstName, firstName.textProperty(), person::setFirstName)
-                .map(lastName, lastName.textProperty(), person::setLastName)
-                .map(phone, phone.textProperty(), person::setPhone)
-                .setValidator(validator);
+        submit.disableProperty().bind(validator.isValidProperty().not());
+
+        nextPerson();
 
     }
 
-    private Person createPerson() {
+    public void nextPerson() {
+        Person person = createPerson();
+        setPerson(person);
+    }
+
+    public void setPerson(Person person) {
+
+        firstName.textProperty().setValue(person.getFirstName());
+        lastName.textProperty().setValue(person.getLastName());
+        phone.textProperty().setValue(person.getPhone());
+
+        new Mapper<>(person)
+                .blur(firstName, firstName.textProperty(), person::setFirstName)
+                .blur(lastName, lastName.textProperty(), person::setLastName)
+                .change(phone.textProperty(), person::setPhone)
+                .setValidator(validator);
+
+
+    }
+
+    public Person createPerson() {
         Person person = new Person();
-        person.setFirstName("Hans Erik");
+        Random random = new Random();
+
+        int i = random.nextInt(9999);
+        person.setFirstName("Hans " + i);
         person.setLastName("Hansen");
-        person.setPhone("123-4567");
+        person.setPhone("123-" + i);
         return person;
     }
 }

@@ -1,4 +1,4 @@
-package dk.kyuff.javafx.validation;
+package dk.kyuff.javafx.validation.javax;
 
 import javax.validation.ConstraintViolation;
 import java.util.*;
@@ -42,9 +42,7 @@ public class ErrorHandlerMap<T> {
         Map<ErrorHandler<T>, Set<ConstraintViolation<T>>> output = new HashMap<>();
 
         // pre-fill the output to ensure all error handlers get a violation set - even if empty
-        map.forEach((field, handlerList) -> {
-            handlerList.forEach(handler -> output.put(handler, new HashSet<>()));
-        });
+        map.forEach((field, handlerList) -> handlerList.forEach(handler -> output.put(handler, new HashSet<>())));
 
         violations.forEach(violation -> {
             String field = violation.getPropertyPath().toString();

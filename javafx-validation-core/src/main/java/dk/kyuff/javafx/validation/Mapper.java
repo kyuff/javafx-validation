@@ -1,5 +1,6 @@
 package dk.kyuff.javafx.validation;
 
+import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.Node;
 
@@ -19,12 +20,20 @@ public class Mapper<T> {
         this.entity = entity;
     }
 
-    public <O> Mapper<T> map(Node node, ObservableValue<O> property, Consumer<O> consumer) {
+    public <O> Mapper<T> blur(Node node, ObservableValue<O> property, Consumer<O> consumer) {
         node.focusedProperty().addListener((observable, oldValue, focused) -> {
             if (!focused) {
                 consumer.accept(property.getValue());
                 validate();
             }
+        });
+        return this;
+    }
+
+    public <O> Mapper<T> change(ObservableValue<O> property, Consumer<O> consumer) {
+        property.addListener((observable, oldValue, newValue) -> {
+            consumer.accept(newValue);
+            validate();
         });
         return this;
     }
@@ -37,6 +46,7 @@ public class Mapper<T> {
 
     public Mapper<T> setValidator(FXValidator<T> validator) {
         this.validator = validator;
+        validate();
         return this;
     }
 

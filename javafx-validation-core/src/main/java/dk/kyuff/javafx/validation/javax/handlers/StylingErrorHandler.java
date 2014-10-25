@@ -1,6 +1,6 @@
-package dk.kyuff.javafx.validation.handlers;
+package dk.kyuff.javafx.validation.javax.handlers;
 
-import dk.kyuff.javafx.validation.ErrorHandler;
+import dk.kyuff.javafx.validation.javax.ErrorHandler;
 import javafx.scene.Node;
 
 import javax.validation.ConstraintViolation;
