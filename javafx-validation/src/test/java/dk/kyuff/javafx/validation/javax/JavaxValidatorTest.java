@@ -10,25 +10,31 @@ import java.time.LocalDate;
 
 public class JavaxValidatorTest {
 
-    FXValidator<Root> validator;
+    FXValidator<Parent> validator;
 
     RootHandler name;
     RootHandler birthday;
 
-    Root pojo;
+    Parent pojo;
+
 
     @Before
     public void setUp() throws Exception {
 
         name = new RootHandler();
         birthday = new RootHandler();
-        pojo = new Root();
+        pojo = new Parent();
         pojo.setName("Ib");
         pojo.setBirthday(LocalDate.now());
+        Child child = new Child();
+        child.setName("Vera");
+        child.setAge(6);
+        pojo.setChild(child);
 
-        validator = new JavaxValidator<>(Root.class)
-                .bind(name, Root::getName)
-                .bind(birthday, Root::getBirthday);
+        validator = new JavaxValidator<>(Parent.class)
+                .bind(name, Parent::getName)
+                .bind(birthday, Parent::getBirthday)
+                .bind(null, Parent::getChild);
 
     }
 

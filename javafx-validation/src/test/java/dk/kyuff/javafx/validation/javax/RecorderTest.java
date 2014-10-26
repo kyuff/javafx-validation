@@ -1,0 +1,57 @@
+package dk.kyuff.javafx.validation.javax;
+
+import junit.framework.TestCase;
+
+import java.util.List;
+
+public class RecorderTest extends TestCase {
+
+    public void testRecord_method_reference() throws Exception {
+        // setup
+        Recorder<Parent> recorder = new Recorder<>(Parent.class);
+
+        // execute
+        List<String> fields = recorder.record(Parent::getName);
+
+        // assert
+        assertEquals(1, fields.size());
+        assertTrue(fields.contains("name"));
+    }
+
+    public void testRecord_lambda() throws Exception {
+        // setup
+        Recorder<Parent> recorder = new Recorder<>(Parent.class);
+
+        // execute
+        List<String> fields = recorder.record(proxy -> {
+            proxy.getBirthday();
+            proxy.getChild();
+        });
+
+        // assert
+        assertEquals(2, fields.size());
+        assertTrue(fields.contains("birthday"));
+        assertTrue(fields.contains("child"));
+    }
+
+
+    public void testRecord_nested_objects() throws Exception {
+        // setup
+        Recorder<Parent> recorder = new Recorder<>(Parent.class);
+
+        // execute
+        List<String> fields = recorder.record(proxy -> {
+            proxy.getBirthday();
+            proxy.getChild().getName();
+            proxy.getChild().getFriend();
+            proxy.getChild().getFriend().getAge();
+        });
+
+        // assert
+        assertEquals(4, fields.size());
+        assertTrue(fields.contains("birthday"));
+        assertTrue(fields.contains("child.name"));
+        assertTrue(fields.contains("child.friend"));
+        assertTrue(fields.contains("child.friend.age"));
+    }
+}

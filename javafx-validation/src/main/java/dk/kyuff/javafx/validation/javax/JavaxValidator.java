@@ -22,18 +22,16 @@ import java.util.function.Consumer;
  */
 public class JavaxValidator<T> implements FXValidator<T> {
 
-
-    private Class<T> validatedClass;
-    private T proxy;
     private Validator validator;
     private ErrorHandlerMap<T> map;
+
+    private Recorder<T> recorder;
 
     private SimpleBooleanProperty isValid;
 
     public JavaxValidator(Class<T> validatedClass) {
-        this.validatedClass = validatedClass;
-        this.proxy = createProxy();
         this.map = new ErrorHandlerMap<>();
+        this.recorder = new Recorder<>(validatedClass);
 
         ValidatorFactory validatorFactory = Validation.buildDefaultValidatorFactory();
         this.validator = validatorFactory.getValidator();
@@ -42,37 +40,12 @@ public class JavaxValidator<T> implements FXValidator<T> {
 
     @Override
     public FXValidator<T> bind(ErrorHandler<T> handler, Consumer<T> binder) {
-        map.beginRecording(handler);
-        binder.accept(proxy);
-        map.endRecording();
+        if (handler == null || binder == null) {
+            return this;
+        }
+        List<String> fields = recorder.record(binder);
+        map.add(handler, fields);
         return this;
-    }
-
-    private T createProxy() {
-        Enhancer enhancer = new Enhancer();
-        enhancer.setClassLoader(this.getClass().getClassLoader());
-        enhancer.setSuperclass(validatedClass);
-        enhancer.setCallback((MethodInterceptor) (o, method, objects, methodProxy) -> {
-            // TODO This needs to be a bit more complex.
-            // So we can have a use-case with nested pojo, ie person.address.street
-            String name = methodNameToPropertyName(method.getName());
-            map.addField(name);
-            // this is a mock, don't actually do anything
-            return null;
-        });
-        return (T) enhancer.create();
-    }
-
-    private String methodNameToPropertyName(String name) {
-        // TODO externalize to a unitTestable class
-        String ret = name;
-        if (ret.length() > 3 && ret.startsWith("get")) {
-            ret = ret.substring(3);
-        }
-        if (ret.length() > 1) {
-            ret = ret.substring(0, 1).toLowerCase() + ret.substring(1);
-        }
-        return ret;
     }
 
 

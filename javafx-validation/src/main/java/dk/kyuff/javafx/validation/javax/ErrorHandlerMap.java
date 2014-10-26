@@ -13,31 +13,21 @@ import java.util.*;
 public class ErrorHandlerMap<T> {
 
 
-    private ErrorHandler<T> activeHandler;
-
     private Map<String, List<ErrorHandler<T>>> map;
 
     public ErrorHandlerMap() {
         this.map = new HashMap<>();
     }
 
-    public void beginRecording(ErrorHandler<T> handler) {
-        activeHandler = handler;
-    }
 
-    public void endRecording() {
-        activeHandler = null;
-    }
+    public void add(ErrorHandler<T> handler, List<String> fields) {
+        fields.forEach(name -> {
+            if (!map.containsKey(name)) {
+                map.put(name, new ArrayList<>());
 
-    public void addField(String name) {
-        if (activeHandler == null) {
-            throw new IllegalStateException("activeHandler should not be null during a recording");
-        }
-        if (!map.containsKey(name)) {
-            map.put(name, new ArrayList<>());
-
-        }
-        map.get(name).add(activeHandler);
+            }
+            map.get(name).add(handler);
+        });
     }
 
     public Map<ErrorHandler<T>, Set<ConstraintViolation<T>>> sort(final Set<ConstraintViolation<T>> violations) {
