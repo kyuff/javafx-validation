@@ -57,7 +57,8 @@ public class JavaxValidator<T> implements FXValidator<T> {
             // So we can have a use-case with nested pojo, ie person.address.street
             String name = methodNameToPropertyName(method.getName());
             map.addField(name);
-            return methodProxy.invokeSuper(o, objects);
+            // this is a mock, don't actually do anything
+            return null;
         });
         return (T) enhancer.create();
     }

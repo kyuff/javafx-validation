@@ -9,10 +9,12 @@ import dk.kyuff.javafx.validation.handlers.StylingErrorHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 
 import java.net.URL;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.Random;
 import java.util.ResourceBundle;
@@ -43,6 +45,13 @@ public class DemoController implements Initializable {
     public Label phoneErrors;
     @FXML
     public Button submit;
+    @FXML
+    public Label birthdayLabel;
+    @FXML
+    public DatePicker birthday;
+    @FXML
+    public Label birthdayErrors;
+
     private FXValidator<Person> validator;
 
     @Override
@@ -57,7 +66,8 @@ public class DemoController implements Initializable {
                 .bind(new CombiningErrorHandler<>(
                         new StylingErrorHandler<>(phone, "error"),
                         new LabelErrorHandler<>(phoneErrors)
-                ), Person::getPhone);
+                ), Person::getPhone)
+                .bind(new LabelErrorHandler<>(birthdayErrors), Person::getBirthdayAsDate);
 
         submit.disableProperty().bind(validator.isValidProperty().not());
 
@@ -80,6 +90,7 @@ public class DemoController implements Initializable {
                 .blur(firstName, firstName.textProperty(), person::setFirstName)
                 .blur(lastName, lastName.textProperty(), person::setLastName)
                 .change(phone.textProperty(), person::setPhone)
+                .change(birthday.valueProperty(), person::setBirthday)
                 .setValidator(validator);
 
 
@@ -93,7 +104,7 @@ public class DemoController implements Initializable {
         person.setFirstName("Hans " + i);
         person.setLastName("Hansen");
         person.setPhone("123-" + i);
-        person.setBirthday(new Date());
+        person.setBirthday(LocalDate.now());
         return person;
     }
 }

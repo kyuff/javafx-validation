@@ -6,6 +6,9 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Date;
 
 /**
@@ -23,9 +26,13 @@ public class Person {
     @Size(max = 8, message = "too long")
     @Pattern(regexp = "\\d{3}-\\d{4}", message = "match xxx-xxxx")
     private String phone;
-    @Past
-    private Date birthday;
+    private LocalDate birthday;
 
+    @Past
+    public Date getBirthdayAsDate() {
+        Instant instant = getBirthday().atStartOfDay(ZoneId.systemDefault()).toInstant();
+        return Date.from(instant);
+    }
 
     public String getFirstName() {
         return firstName;
@@ -51,11 +58,11 @@ public class Person {
         this.phone = phone;
     }
 
-    public Date getBirthday() {
+    public LocalDate getBirthday() {
         return birthday;
     }
 
-    public void setBirthday(Date birthday) {
+    public void setBirthday(LocalDate birthday) {
         this.birthday = birthday;
     }
 }
