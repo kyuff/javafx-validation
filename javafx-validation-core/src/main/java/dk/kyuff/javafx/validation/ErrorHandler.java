@@ -13,8 +13,6 @@ import java.util.Set;
  */
 public interface ErrorHandler<T> {
 
-    void handle(Set<ConstraintViolation<T>> violations);
-
     ObservableList<String> getErrorMessages();
 
 }

@@ -1,6 +1,5 @@
 package dk.kyuff.javafx.validation.handlers;
 
-import dk.kyuff.javafx.validation.BaseErrorHandler;
 import dk.kyuff.javafx.validation.ErrorHandler;
 import javafx.collections.ListChangeListener;
 

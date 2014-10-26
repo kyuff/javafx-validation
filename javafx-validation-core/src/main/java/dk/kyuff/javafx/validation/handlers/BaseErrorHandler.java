@@ -1,9 +1,8 @@
-package dk.kyuff.javafx.validation;
+package dk.kyuff.javafx.validation.handlers;
 
+import dk.kyuff.javafx.validation.ErrorHandler;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-
-import java.util.Set;
 
 /**
  * User: swi
@@ -16,11 +15,6 @@ public abstract class BaseErrorHandler<T> implements ErrorHandler<T> {
 
     public BaseErrorHandler() {
         this.errorMessages = FXCollections.observableArrayList();
-    }
-
-    @Override
-    public void handle(Set set) {
-
     }
 
     public ObservableList<String> getErrorMessages() {

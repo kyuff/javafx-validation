@@ -13,6 +13,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 
 import java.net.URL;
+import java.util.Date;
 import java.util.Random;
 import java.util.ResourceBundle;
 
@@ -92,6 +93,7 @@ public class DemoController implements Initializable {
         person.setFirstName("Hans " + i);
         person.setLastName("Hansen");
         person.setPhone("123-" + i);
+        person.setBirthday(new Date());
         return person;
     }
 }
