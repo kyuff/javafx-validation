@@ -19,9 +19,9 @@ import java.util.Date;
 public class Person {
 
     @NotNull(message = "must be set")
-    @Size(min = 5, max = 10, message = "wrong size")
+    @Size(min = 5, max = 10)
     private String firstName;
-    @Size(min = 3, max = 7, message = "wrong size")
+    @Size(min = 3, max = 7, message = "{person.lastName.size}")
     private String lastName;
     @Size(max = 8, message = "too long")
     @Pattern(regexp = "\\d{3}-\\d{4}", message = "match xxx-xxxx")
