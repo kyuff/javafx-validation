@@ -1,5 +1,7 @@
 package dk.kyuff.javafx.validation.javax;
 
+import dk.kyuff.javafx.validation.ErrorHandler;
+
 import javax.validation.ConstraintViolation;
 import java.util.*;
 

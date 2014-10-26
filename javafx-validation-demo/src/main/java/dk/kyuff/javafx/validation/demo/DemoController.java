@@ -2,10 +2,10 @@ package dk.kyuff.javafx.validation.demo;
 
 import dk.kyuff.javafx.validation.FXValidator;
 import dk.kyuff.javafx.validation.javax.JavaxValidator;
-import dk.kyuff.javafx.validation.javax.handlers.CombiningErrorHandler;
-import dk.kyuff.javafx.validation.javax.handlers.LabelErrorHandler;
+import dk.kyuff.javafx.validation.handlers.CombiningErrorHandler;
+import dk.kyuff.javafx.validation.handlers.LabelErrorHandler;
 import dk.kyuff.javafx.validation.Mapper;
-import dk.kyuff.javafx.validation.javax.handlers.StylingErrorHandler;
+import dk.kyuff.javafx.validation.handlers.StylingErrorHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;

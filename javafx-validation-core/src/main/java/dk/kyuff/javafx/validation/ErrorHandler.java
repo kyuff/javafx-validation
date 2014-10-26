@@ -1,4 +1,7 @@
-package dk.kyuff.javafx.validation.javax;
+package dk.kyuff.javafx.validation;
+
+import javafx.beans.property.StringProperty;
+import javafx.collections.ObservableList;
 
 import javax.validation.ConstraintViolation;
 import java.util.Set;
@@ -11,5 +14,7 @@ import java.util.Set;
 public interface ErrorHandler<T> {
 
     void handle(Set<ConstraintViolation<T>> violations);
+
+    ObservableList<String> getErrorMessages();
 
 }
