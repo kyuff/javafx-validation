@@ -85,6 +85,7 @@ public class DemoController implements Initializable {
         firstName.textProperty().setValue(person.getFirstName());
         lastName.textProperty().setValue(person.getLastName());
         phone.textProperty().setValue(person.getPhone());
+        birthday.setValue(person.getBirthday());
 
         new Mapper<>(person)
                 .blur(firstName, firstName.textProperty(), person::setFirstName)

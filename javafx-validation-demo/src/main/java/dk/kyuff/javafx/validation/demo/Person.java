@@ -28,7 +28,7 @@ public class Person {
     private String phone;
     private LocalDate birthday;
 
-    @Past
+    @Past( message = "must be in the past")
     public Date getBirthdayAsDate() {
         Instant instant = getBirthday().atStartOfDay(ZoneId.systemDefault()).toInstant();
         return Date.from(instant);
