@@ -18,6 +18,30 @@ public class RecorderTest extends TestCase {
         assertTrue(fields.contains("name"));
     }
 
+    public void testRecord_date() throws Exception {
+        // setup
+        Recorder<Friend> recorder = new Recorder<>(Friend.class);
+
+        // execute
+        List<String> fields = recorder.record(Friend::getBirthday);
+
+        // assert
+        assertEquals(1, fields.size());
+        assertTrue(fields.contains("birthday"));
+    }
+
+    public void testRecord_string() throws Exception {
+        // setup
+        Recorder<Friend> recorder = new Recorder<>(Friend.class);
+
+        // execute
+        List<String> fields = recorder.record(Friend::getName);
+
+        // assert
+        assertEquals(1, fields.size());
+        assertTrue(fields.contains("name"));
+    }
+
     public void testRecord_lambda() throws Exception {
         // setup
         Recorder<Parent> recorder = new Recorder<>(Parent.class);

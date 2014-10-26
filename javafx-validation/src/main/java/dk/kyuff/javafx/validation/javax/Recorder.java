@@ -6,6 +6,7 @@ import net.sf.cglib.proxy.MethodInterceptor;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.function.Consumer;
 
@@ -18,6 +19,8 @@ public class Recorder<T> {
 
 
     private final Class<T> validatedClass;
+
+    private static final List<Class<?>> ILLEGAL_CLASSES = Arrays.asList(Date.class);
 
     public Recorder(Class<T> validatedClass) {
         this.validatedClass = validatedClass;
@@ -51,15 +54,34 @@ public class Recorder<T> {
     }
 
     private <C> Node<C> createNode(Class<C> clazz) {
+
+        Node<C> current = new Node<>();
+        if (ILLEGAL_CLASSES.contains(clazz)) {
+            createReal(clazz, current);
+        } else {
+            createProxy(clazz, current);
+        }
+        return current;
+
+    }
+
+    private <C> void createReal(Class<C> clazz, Node<C> current) {
+        try {
+            C o = clazz.newInstance();
+            current.setProxy(o);
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private <C> void createProxy(Class<C> clazz, Node<C> current) {
         Enhancer enhancer = new Enhancer();
         enhancer.setClassLoader(this.getClass().getClassLoader());
         enhancer.setSuperclass(clazz);
-        Node<C> current = new Node<>();
         enhancer.setCallback((MethodInterceptor) (o, method, objects, methodProxy) -> {
             String name = methodNameToPropertyName(method.getName());
-
-            // TODO Should create the track with the current name
-            // this is a mock, don't actually do anything
 
             Class<?> methodReturnType = method.getReturnType();
             Node<?> child;
@@ -75,9 +97,8 @@ public class Recorder<T> {
             return child.getProxy();
         });
 
-        current.setProxy((C) enhancer.create());
-
-        return current;
+        Object o = enhancer.create();
+        current.setProxy((C) o);
     }
 
     private String methodNameToPropertyName(String name) {
