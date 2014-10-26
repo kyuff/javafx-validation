@@ -5,14 +5,27 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>dk.kyuff</groupId>
-    <artifactId>javafx-validation</artifactId>
+    <artifactId>javafx-validation-parent</artifactId>
     <version>1.0-SNAPSHOT</version>
     <modules>
-        <module>javafx-validation-core</module>
+        <module>javafx-validation</module>
         <module>javafx-validation-demo</module>
     </modules>
 
     <packaging>pom</packaging>
 
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.2</version>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 
 </project>
