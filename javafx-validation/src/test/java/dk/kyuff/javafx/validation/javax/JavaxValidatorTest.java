@@ -46,7 +46,7 @@ public class JavaxValidatorTest {
 
 
     @Test
-    public void testValidate_Error() throws Exception {
+    public void testValidate_Error_1() throws Exception {
         // setup
         pojo.setName("way too long for this field");
 
@@ -55,6 +55,21 @@ public class JavaxValidatorTest {
 
         // verify
         assertEquals(1, name.getErrorMessages().size());
+        assertEquals("wrong size", name.getErrorMessages().get(0));
         assertEquals(0, birthday.getErrorMessages().size());
+    }
+
+    @Test
+    public void testValidate_Error_2() throws Exception {
+        // setup
+        pojo.setBirthday(null);
+
+        // execute
+        validator.validate(pojo);
+
+        // verify
+        assertEquals(0, name.getErrorMessages().size());
+        assertEquals(1, birthday.getErrorMessages().size());
+        assertEquals("not null", birthday.getErrorMessages().get(0));
     }
 }
