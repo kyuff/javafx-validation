@@ -1,21 +1,25 @@
-package dk.kyuff.javafx.validation.javax;
+package dk.kyuff.validation.binder.jsr303.model;
 
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Past;
 import javax.validation.constraints.Size;
+import java.util.Date;
 
 /**
  * User: swi
  * Date: 26/10/14
- * Time: 13.24
+ * Time: 21.09
  */
-public class Child {
+public class Friend {
+
+    @Size(min = 2, max = 15)
+    int age;
 
     @NotNull
     private String name;
-    @Size(max = 18)
-    private int age;
-    @NotNull
-    private Friend friend;
+
+    @Past
+    private Date birthday;
 
     public String getName() {
         return name;
@@ -33,11 +37,11 @@ public class Child {
         this.age = age;
     }
 
-    public Friend getFriend() {
-        return friend;
+    public Date getBirthday() {
+        return birthday;
     }
 
-    public void setFriend(Friend friend) {
-        this.friend = friend;
+    public void setBirthday(Date birthday) {
+        this.birthday = birthday;
     }
 }

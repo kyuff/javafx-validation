@@ -1,4 +1,4 @@
-package dk.kyuff.javafx.validation.javax;
+package dk.kyuff.validation.binder.jsr303.internal;
 
 import javax.validation.ConstraintViolation;
 import java.util.*;
@@ -32,7 +32,9 @@ public class HandlerMap<T> {
 
         violations.forEach(violation -> {
             String field = violation.getPropertyPath().toString();
-            map.get(field).forEach(handler -> output.get(handler).add(violation));
+            if (map.containsKey(field)) {
+                map.get(field).forEach(handler -> output.get(handler).add(violation));
+            }
         });
 
         return output;

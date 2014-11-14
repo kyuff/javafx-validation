@@ -1,14 +1,10 @@
-package dk.kyuff.javafx.validation.demo;
+package dk.kyuff.validation.binder.demo;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-
-import java.util.List;
-import java.util.function.Consumer;
 
 /**
  * User: swi

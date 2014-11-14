@@ -1,5 +1,6 @@
-package dk.kyuff.javafx.validation.javax;
+package dk.kyuff.validation.binder.jsr303.model;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.LocalDate;
@@ -16,6 +17,7 @@ public class Parent {
     @NotNull(message = "not null")
     private LocalDate birthday;
     @NotNull
+    @Valid
     private Child child;
 
     public String getName() {

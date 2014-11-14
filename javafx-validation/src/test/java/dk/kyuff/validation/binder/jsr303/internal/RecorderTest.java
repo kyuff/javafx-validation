@@ -1,5 +1,7 @@
-package dk.kyuff.javafx.validation.javax;
+package dk.kyuff.validation.binder.jsr303.internal;
 
+import dk.kyuff.validation.binder.jsr303.model.Friend;
+import dk.kyuff.validation.binder.jsr303.model.Parent;
 import junit.framework.TestCase;
 
 import java.util.List;

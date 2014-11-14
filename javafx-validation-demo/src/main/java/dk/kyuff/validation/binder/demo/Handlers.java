@@ -1,4 +1,4 @@
-package dk.kyuff.javafx.validation.demo;
+package dk.kyuff.validation.binder.demo;
 
 import javafx.scene.Node;
 

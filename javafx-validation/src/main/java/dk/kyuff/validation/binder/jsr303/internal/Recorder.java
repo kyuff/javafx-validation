@@ -1,4 +1,4 @@
-package dk.kyuff.javafx.validation.javax;
+package dk.kyuff.validation.binder.jsr303.internal;
 
 import net.sf.cglib.proxy.Enhancer;
 import net.sf.cglib.proxy.MethodInterceptor;

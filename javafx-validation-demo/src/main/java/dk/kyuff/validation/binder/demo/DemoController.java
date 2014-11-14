@@ -1,8 +1,8 @@
-package dk.kyuff.javafx.validation.demo;
+package dk.kyuff.validation.binder.demo;
 
-import dk.kyuff.javafx.validation.FXValidator;
-import dk.kyuff.javafx.validation.javax.JavaxValidator;
-import dk.kyuff.javafx.validation.Mapper;
+import dk.kyuff.validation.binder.ValidationBinder;
+import dk.kyuff.validation.binder.jsr303.BeanValidator;
+import dk.kyuff.validation.binder.Mapper;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -48,12 +48,12 @@ public class DemoController implements Initializable {
     @FXML
     public Label birthdayErrors;
 
-    private FXValidator<Person> validator;
+    private ValidationBinder<Person> validator;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
-        validator = new JavaxValidator<>(Person.class)
+        validator = new BeanValidator<>(Person.class)
                 .bind(Handlers.styling(firstName, "error"), Person::getFirstName)
                 .bind(Handlers.messages(lastNameErrors::setText), pojo -> {
                     pojo.getLastName();

@@ -1,4 +1,4 @@
-package dk.kyuff.javafx.validation;
+package dk.kyuff.validation.binder;
 
 import javafx.beans.value.ObservableValue;
 import javafx.scene.Node;
@@ -12,7 +12,7 @@ import java.util.function.Consumer;
  */
 public class Mapper<T> {
 
-    FXValidator<T> validator;
+    ValidationBinder<T> validator;
     final T entity;
 
     public Mapper(T entity) {
@@ -43,7 +43,7 @@ public class Mapper<T> {
         }
     }
 
-    public Mapper<T> setValidator(FXValidator<T> validator) {
+    public Mapper<T> setValidator(ValidationBinder<T> validator) {
         this.validator = validator;
         validate();
         return this;

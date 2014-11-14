@@ -1,4 +1,4 @@
-package dk.kyuff.javafx.validation.demo;
+package dk.kyuff.validation.binder.demo;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;

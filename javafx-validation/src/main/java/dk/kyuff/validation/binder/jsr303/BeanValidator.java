@@ -1,6 +1,8 @@
-package dk.kyuff.javafx.validation.javax;
+package dk.kyuff.validation.binder.jsr303;
 
-import dk.kyuff.javafx.validation.FXValidator;
+import dk.kyuff.validation.binder.ValidationBinder;
+import dk.kyuff.validation.binder.jsr303.internal.HandlerMap;
+import dk.kyuff.validation.binder.jsr303.internal.Recorder;
 import javafx.beans.property.ReadOnlyBooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 
@@ -19,14 +21,14 @@ import java.util.stream.Collectors;
  * Date: 25/10/14
  * Time: 13.01
  */
-public class JavaxValidator<T> implements FXValidator<T> {
+public class BeanValidator<T> implements ValidationBinder<T> {
 
     private Validator validator;
     private final HandlerMap<T> handlerMap;
     private final Recorder<T> recorder;
     private final SimpleBooleanProperty isValid;
 
-    public JavaxValidator(Class<T> validatedClass) {
+    public BeanValidator(Class<T> validatedClass) {
         this.handlerMap = new HandlerMap<>();
         this.recorder = new Recorder<>(validatedClass);
 
@@ -45,7 +47,7 @@ public class JavaxValidator<T> implements FXValidator<T> {
         return validator;
     }
 
-    public FXValidator<T> bind(Consumer<List<String>> handler, Consumer<T> binder) {
+    public ValidationBinder<T> bind(Consumer<List<String>> handler, Consumer<T> binder) {
         if (handler == null || binder == null) {
             return this;
         }
@@ -58,7 +60,8 @@ public class JavaxValidator<T> implements FXValidator<T> {
     @Override
     public void validate(T entity) {
 
-        Set<ConstraintViolation<T>> allViolations = getValidator().validate(entity);
+        Validator v = getValidator();
+        Set<ConstraintViolation<T>> allViolations = v.validate(entity);
         isValid.setValue(allViolations.size() == 0);
 
         Map<Consumer<List<String>>, Set<ConstraintViolation<T>>> sortedViolations = handlerMap.sort(allViolations);
@@ -69,11 +72,6 @@ public class JavaxValidator<T> implements FXValidator<T> {
             handler.accept(messages);
         });
 
-    }
-
-    @Override
-    public boolean getIsValid() {
-        return isValid.get();
     }
 
     @Override
