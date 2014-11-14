@@ -11,7 +11,7 @@
     </parent>-->
 
     <groupId>dk.kyuff</groupId>
-    <artifactId>javafx-validation-parent</artifactId>
+    <artifactId>validation-binder-parent</artifactId>
     <version>1.0-SNAPSHOT</version>
 
     <url>https://github.com/kyuff/javafx-validation</url>
