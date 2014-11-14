@@ -58,7 +58,7 @@ public class BeanValidator<T> implements ValidationBinder<T> {
 
 
     @Override
-    public void validate(T entity) {
+    public boolean validate(T entity) {
 
         Validator v = getValidator();
         Set<ConstraintViolation<T>> allViolations = v.validate(entity);
@@ -71,6 +71,7 @@ public class BeanValidator<T> implements ValidationBinder<T> {
                     .collect(Collectors.toList());
             handler.accept(messages);
         });
+        return allViolations.isEmpty();
 
     }
 

@@ -27,8 +27,9 @@ public interface ValidationBinder<T> {
      * an empty set.
      *
      * @param entity the entity to validate.
+     * @return true if the entity is valid
      */
-    void validate(T entity);
+    boolean validate(T entity);
 
     /**
      * A property that specifies if all validations are valid
