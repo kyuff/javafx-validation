@@ -1,4 +1,4 @@
-javafx-validation
+validation-binder
 =================
 
 Proof of Concept of using java.validation with JavaFX
@@ -12,17 +12,16 @@ EXAMPLE
 
 This examples uses different bindings for the validator.
 
-    FXValidator<Person> validator = new JavaxValidator<>(Person.class)
-        .bind(new StylingErrorHandler<>(firstName, "error"), Person::getFirstName)
-        .bind(new LabelErrorHandler<>(lastNameErrors), pojo -> {
+        ValidationBinder<Person> validator = new BeanValidator<>(Person.class)
+                .bind(Handlers.styling(firstName, "error"), Person::getFirstName)
+                .bind(Handlers.messages(lastNameErrors::setText), pojo -> {
                     pojo.getLastName();
                     pojo.getPhone();
-            })
-        .bind(new CombiningErrorHandler<>(
-                    new StylingErrorHandler<>(phone, "error"),
-                    new LabelErrorHandler<>(phoneErrors)
-            ), Person::getPhone)
-        .bind(new LabelErrorHandler<>(birthdayErrors), Person::getBirthdayAsDate);
+                })
+                .bind(Handlers.styling(phone, "error")
+                               .andThen(Handlers.messages(phoneErrors::setText)),
+                        Person::getPhone)
+                .bind(Handlers.messages(birthdayErrors::setText), Person::getBirthdayAsDate);
         
     submit.disableProperty().bind(validator.isValidProperty().not());
 
