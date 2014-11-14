@@ -5,6 +5,7 @@ Proof of Concept of using java.validation with JavaFX
 
 Run the DemoApp to try it out.
 
+Read motivation here: http://blog.kyuff.dk/2014/11/binding-to-bean-validations.html
 
 
 EXAMPLE
