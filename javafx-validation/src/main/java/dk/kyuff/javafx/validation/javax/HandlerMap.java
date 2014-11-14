@@ -24,12 +24,10 @@ public class HandlerMap<T> {
         });
     }
 
+
     public Map<Consumer<List<String>>, Set<ConstraintViolation<T>>> sort(Set<ConstraintViolation<T>> violations) {
         Map<Consumer<List<String>>, Set<ConstraintViolation<T>>> output = new HashMap<>();
-
         // pre-fill the output to ensure all error handlers get a violation set - even if empty
-        // TODO: This can be optimized to be cached if the validator is constructed
-        //       without adding any new handlers
         map.forEach((field, handlerList) -> handlerList.forEach(handler -> output.put(handler, new HashSet<>())));
 
         violations.forEach(violation -> {

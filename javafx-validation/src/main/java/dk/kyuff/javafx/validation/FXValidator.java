@@ -14,7 +14,7 @@ public interface FXValidator<T> {
     /**
      * Bind errors to a particular error handler
      *
-     * @param handler the error handler that must display warnings to the user
+     * @param handler the function that should be called with the error messages - if any
      * @param binder  a setup consumer that is required to call the methods on the entity that have the constraints this handler must take care of
      * @return the validator itself in order to allow a fluid pattern.
      */
@@ -32,12 +32,14 @@ public interface FXValidator<T> {
 
     /**
      * Are all validations valid
+     *
      * @return true if valid
      */
     boolean getIsValid();
 
     /**
      * A property that specifies if all validations are valid
+     *
      * @return property to be listened to
      */
     ReadOnlyBooleanProperty isValidProperty();

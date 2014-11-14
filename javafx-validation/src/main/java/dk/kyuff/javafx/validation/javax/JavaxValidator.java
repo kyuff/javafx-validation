@@ -23,18 +23,26 @@ public class JavaxValidator<T> implements FXValidator<T> {
 
     private Validator validator;
     private HandlerMap<T> handlerMap;
-
     private Recorder<T> recorder;
-
     private SimpleBooleanProperty isValid;
 
     public JavaxValidator(Class<T> validatedClass) {
         this.handlerMap = new HandlerMap<>();
         this.recorder = new Recorder<>(validatedClass);
 
-        ValidatorFactory validatorFactory = Validation.buildDefaultValidatorFactory();
-        this.validator = validatorFactory.getValidator();
         this.isValid = new SimpleBooleanProperty();
+    }
+
+    public void setValidator(Validator validator) {
+        this.validator = validator;
+    }
+
+    public Validator getValidator() {
+        if( validator == null ) {
+            ValidatorFactory validatorFactory = Validation.buildDefaultValidatorFactory();
+            this.validator = validatorFactory.getValidator();
+        }
+        return validator;
     }
 
     public FXValidator<T> bind(Consumer<List<String>> handler, Consumer<T> binder) {
@@ -50,7 +58,7 @@ public class JavaxValidator<T> implements FXValidator<T> {
     @Override
     public void validate(T entity) {
 
-        Set<ConstraintViolation<T>> allViolations = validator.validate(entity);
+        Set<ConstraintViolation<T>> allViolations = getValidator().validate(entity);
         isValid.setValue(allViolations.size() == 0);
 
         Map<Consumer<List<String>>, Set<ConstraintViolation<T>>> sortedViolations = handlerMap.sort(allViolations);

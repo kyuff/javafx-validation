@@ -71,7 +71,7 @@ public class DemoController implements Initializable {
     }
 
     public void nextPerson() {
-        Person person = createPerson();
+        Person person = createRandomPerson();
         setPerson(person);
     }
 
@@ -92,7 +92,7 @@ public class DemoController implements Initializable {
 
     }
 
-    public Person createPerson() {
+    public Person createRandomPerson() {
         Person person = new Person();
         Random random = new Random();
 
