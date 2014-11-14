@@ -2,10 +2,7 @@ package dk.kyuff.javafx.validation.demo;
 
 import dk.kyuff.javafx.validation.FXValidator;
 import dk.kyuff.javafx.validation.javax.JavaxValidator;
-import dk.kyuff.javafx.validation.handlers.CombiningErrorHandler;
-import dk.kyuff.javafx.validation.handlers.LabelErrorHandler;
 import dk.kyuff.javafx.validation.Mapper;
-import dk.kyuff.javafx.validation.handlers.StylingErrorHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -15,7 +12,6 @@ import javafx.scene.control.TextField;
 
 import java.net.URL;
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.Random;
 import java.util.ResourceBundle;
 
@@ -58,16 +54,15 @@ public class DemoController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
 
         validator = new JavaxValidator<>(Person.class)
-                .bind(new StylingErrorHandler<>(firstName, "error"), Person::getFirstName)
-                .bind(new LabelErrorHandler<>(lastNameErrors), pojo -> {
+                .bind(Handlers.styling(firstName, "error"), Person::getFirstName)
+                .bind(Handlers.messages(lastNameErrors::setText), pojo -> {
                     pojo.getLastName();
                     pojo.getPhone();
                 })
-                .bind(new CombiningErrorHandler<>(
-                        new StylingErrorHandler<>(phone, "error"),
-                        new LabelErrorHandler<>(phoneErrors)
-                ), Person::getPhone)
-                .bind(new LabelErrorHandler<>(birthdayErrors), Person::getBirthdayAsDate);
+                .bind(Handlers.styling(phone, "error")
+                               .andThen(Handlers.messages(phoneErrors::setText)),
+                        Person::getPhone)
+                .bind(Handlers.messages(birthdayErrors::setText), Person::getBirthdayAsDate);
 
         submit.disableProperty().bind(validator.isValidProperty().not());
 

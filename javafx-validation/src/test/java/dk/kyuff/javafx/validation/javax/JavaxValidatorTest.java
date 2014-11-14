@@ -7,13 +7,15 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 public class JavaxValidatorTest {
 
     FXValidator<Parent> validator;
 
-    RootHandler name;
-    RootHandler birthday;
+    List<String> nameMessages;
+    List<String> birthdayMessages;
 
     Parent pojo;
 
@@ -21,8 +23,9 @@ public class JavaxValidatorTest {
     @Before
     public void setUp() throws Exception {
 
-        name = new RootHandler();
-        birthday = new RootHandler();
+        nameMessages = new ArrayList<>();
+        birthdayMessages = new ArrayList<>();
+
         pojo = new Parent();
         pojo.setName("Ib");
         pojo.setBirthday(LocalDate.now());
@@ -32,8 +35,8 @@ public class JavaxValidatorTest {
         pojo.setChild(child);
 
         validator = new JavaxValidator<>(Parent.class)
-                .bind(name, Parent::getName)
-                .bind(birthday, Parent::getBirthday)
+                .bind(nameMessages::addAll, Parent::getName)
+                .bind(birthdayMessages::addAll, Parent::getBirthday)
                 .bind(null, Parent::getChild);
 
     }
@@ -46,8 +49,8 @@ public class JavaxValidatorTest {
         validator.validate(pojo);
 
         // verify
-        assertEquals(0, name.getErrorMessages().size());
-        assertEquals(0, birthday.getErrorMessages().size());
+        assertEquals(0, nameMessages.size());
+        assertEquals(0, birthdayMessages.size());
     }
 
 
@@ -60,9 +63,9 @@ public class JavaxValidatorTest {
         validator.validate(pojo);
 
         // verify
-        assertEquals(1, name.getErrorMessages().size());
-        assertEquals("wrong size", name.getErrorMessages().get(0));
-        assertEquals(0, birthday.getErrorMessages().size());
+        assertEquals(1, nameMessages.size());
+        assertEquals("wrong size", nameMessages.get(0));
+        assertEquals(0, birthdayMessages.size());
     }
 
     @Test
@@ -74,8 +77,8 @@ public class JavaxValidatorTest {
         validator.validate(pojo);
 
         // verify
-        assertEquals(0, name.getErrorMessages().size());
-        assertEquals(1, birthday.getErrorMessages().size());
-        assertEquals("not null", birthday.getErrorMessages().get(0));
+        assertEquals(0, nameMessages.size());
+        assertEquals(1, birthdayMessages.size());
+        assertEquals("not null", birthdayMessages.get(0));
     }
 }

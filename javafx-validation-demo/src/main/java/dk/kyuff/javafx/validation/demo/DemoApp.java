@@ -2,9 +2,13 @@ package dk.kyuff.javafx.validation.demo;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+
+import java.util.List;
+import java.util.function.Consumer;
 
 /**
  * User: swi
@@ -28,4 +32,5 @@ public class DemoApp extends Application {
         stage.setScene(scene);
         stage.show();
     }
+
 }
