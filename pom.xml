@@ -14,9 +14,9 @@
     <artifactId>validation-binder-parent</artifactId>
     <version>1.0-SNAPSHOT</version>
 
-    <url>https://github.com/kyuff/javafx-validation</url>
-    <description>https://github.com/kyuff/javafx-validation</description>
-    <name>javafx-validation</name>
+    <url>https://github.com/kyuff/validation-binder</url>
+    <description>https://github.com/kyuff/validation-binder</description>
+    <name>validation-binder-parent</name>
 
     <modules>
         <module>validation-binder</module>
@@ -34,14 +34,14 @@
     </licenses>
 
     <scm>
-        <url>https://github.com/kyuff/javafx-validation</url>
-        <connection>scm:git:git@github.com:kyuff/javafx-validation.git</connection>
-        <developerConnection>scm:git:git@github.com:kyuff/javafx-validation.git</developerConnection>
+        <url>https://github.com/kyuff/validation-binder</url>
+        <connection>scm:git:git@github.com:kyuff/validation-binder.git</connection>
+        <developerConnection>scm:git:git@github.com:kyuff/validation-binder.git</developerConnection>
         <tag>HEAD</tag>
     </scm>
 
     <issueManagement>
-        <url>https://github.com/kyuff/javafx-validation</url>
+        <url>https://github.com/kyuff/validation-binder</url>
     </issueManagement>
 
     <dependencyManagement>
