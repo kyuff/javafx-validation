@@ -11,9 +11,8 @@ import java.util.List;
 public class Node<R> {
 
     private String name;
-    private Node<?> parent;
     private R proxy;
-    private List<Node<?>> children;
+    private final List<Node<?>> children;
 
     public Node() {
         this.children = new ArrayList<>();
@@ -27,14 +26,6 @@ public class Node<R> {
         this.name = name;
     }
 
-    public Node<?> getParent() {
-        return parent;
-    }
-
-    public void setParent(Node<?> parent) {
-        this.parent = parent;
-    }
-
     public void setProxy(R proxy) {
         this.proxy = proxy;
     }
@@ -45,7 +36,6 @@ public class Node<R> {
 
     public void addChild(Node<?> child) {
         children.add(child);
-        child.setParent(this);
     }
 
     public List<Node<?>> getChildren() {

@@ -69,9 +69,7 @@ public class Recorder<T> {
         try {
             C o = clazz.newInstance();
             current.setProxy(o);
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
+        } catch (InstantiationException | IllegalAccessException e) {
             e.printStackTrace();
         }
     }
@@ -98,6 +96,7 @@ public class Recorder<T> {
         });
 
         Object o = enhancer.create();
+        //noinspection unchecked
         current.setProxy((C) o);
     }
 

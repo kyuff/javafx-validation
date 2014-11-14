@@ -11,7 +11,7 @@ import java.util.function.Consumer;
  * Time: 16.22
  */
 public class HandlerMap<T> {
-    private Map<String, List<Consumer<List<String>>>> map;
+    private final Map<String, List<Consumer<List<String>>>> map;
 
     public HandlerMap() {
         this.map = new ConcurrentHashMap<>();

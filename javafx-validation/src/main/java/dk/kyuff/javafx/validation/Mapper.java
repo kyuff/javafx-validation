@@ -1,6 +1,5 @@
 package dk.kyuff.javafx.validation;
 
-import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.Node;
 
@@ -14,7 +13,7 @@ import java.util.function.Consumer;
 public class Mapper<T> {
 
     FXValidator<T> validator;
-    T entity;
+    final T entity;
 
     public Mapper(T entity) {
         this.entity = entity;

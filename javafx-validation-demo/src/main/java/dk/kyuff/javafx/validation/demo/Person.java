@@ -1,7 +1,5 @@
 package dk.kyuff.javafx.validation.demo;
 
-import sun.util.calendar.LocalGregorianCalendar;
-
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
 import javax.validation.constraints.Pattern;

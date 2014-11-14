@@ -22,9 +22,9 @@ import java.util.stream.Collectors;
 public class JavaxValidator<T> implements FXValidator<T> {
 
     private Validator validator;
-    private HandlerMap<T> handlerMap;
-    private Recorder<T> recorder;
-    private SimpleBooleanProperty isValid;
+    private final HandlerMap<T> handlerMap;
+    private final Recorder<T> recorder;
+    private final SimpleBooleanProperty isValid;
 
     public JavaxValidator(Class<T> validatedClass) {
         this.handlerMap = new HandlerMap<>();
