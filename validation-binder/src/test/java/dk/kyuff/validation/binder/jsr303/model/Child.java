@@ -1,9 +1,7 @@
 package dk.kyuff.validation.binder.jsr303.model;
 
-import javax.validation.Valid;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 
 /**
  * User: swi

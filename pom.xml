@@ -19,8 +19,8 @@
     <name>javafx-validation</name>
 
     <modules>
-        <module>javafx-validation</module>
-        <module>javafx-validation-demo</module>
+        <module>validation-binder</module>
+        <module>validation-binder-demo</module>
     </modules>
 
     <packaging>pom</packaging>
