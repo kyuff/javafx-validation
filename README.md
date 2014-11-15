@@ -14,15 +14,20 @@ EXAMPLE
 This examples uses different bindings for the validator.
 
         ValidationBinder<Person> validator = new BeanValidator<>(Person.class)
-                .bind(Handlers.styling(firstName, "error"), Person::getFirstName)
-                .bind(Handlers.messages(lastNameErrors::setText), pojo -> {
-                    pojo.getLastName();
-                    pojo.getPhone();
-                })
-                .bind(Handlers.styling(phone, "error")
-                               .andThen(Handlers.messages(phoneErrors::setText)),
-                        Person::getPhone)
-                .bind(Handlers.messages(birthdayErrors::setText), Person::getBirthdayAsDate);
-        
-    submit.disableProperty().bind(validator.isValidProperty().not());
+            // simple binding - a normal use case
+            .bind(Handlers.messages(phoneErrors::setText), Person::getPhone)
+            // multi binding with chained handlers
+            .bind(Handlers.messages(nameErrors::setText).andThen(
+                            Handlers.styling(nameBox, "error")
+                    ), pojo -> {
+                        pojo.getFirstName();
+                        pojo.getLastName();
+                    }
+            )
+            // binding to fields in the entity object graph
+            .bind(Handlers.messages(carErrors::setText), pojo -> {
+                pojo.getCar().getEngine();
+                pojo.getCar().getPrice();
+            });
+
 

@@ -1,6 +1,8 @@
 package dk.kyuff.validation.binder.demo;
 
 import dk.kyuff.validation.binder.ValidationBinder;
+import dk.kyuff.validation.binder.demo.model.Car;
+import dk.kyuff.validation.binder.demo.model.Person;
 import dk.kyuff.validation.binder.jsr303.BeanValidator;
 import dk.kyuff.validation.binder.Mapper;
 import javafx.fxml.FXML;
@@ -9,6 +11,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.BorderPane;
 
 import java.net.URL;
 import java.time.LocalDate;
@@ -21,20 +24,13 @@ import java.util.ResourceBundle;
  * Time: 12.52
  */
 public class DemoController implements Initializable {
-    @FXML
-    public Label firstNameLabel;
+
     @FXML
     public TextField firstName;
     @FXML
-    public Label firstNameErrors;
-    @FXML
-    public Label lastNameLabel;
+    public Label nameErrors;
     @FXML
     public TextField lastName;
-    @FXML
-    public Label lastNameErrors;
-    @FXML
-    public Label phoneLabel;
     @FXML
     public TextField phone;
     @FXML
@@ -42,11 +38,17 @@ public class DemoController implements Initializable {
     @FXML
     public Button submit;
     @FXML
-    public Label birthdayLabel;
-    @FXML
     public DatePicker birthday;
     @FXML
     public Label birthdayErrors;
+    @FXML
+    public BorderPane nameBox;
+    @FXML
+    public Label carErrors;
+    @FXML
+    public TextField engine;
+    @FXML
+    public TextField price;
 
     private ValidationBinder<Person> validator;
 
@@ -54,17 +56,22 @@ public class DemoController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
 
         validator = new BeanValidator<>(Person.class)
-                .bind(Handlers.styling(firstName, "error"), Person::getFirstName)
-                .bind(Handlers.messages(lastNameErrors::setText), pojo -> {
-                    pojo.getLastName();
-                    pojo.getPhone();
-                })
-                .bind(Handlers.styling(phone, "error")
-                               .andThen(Handlers.messages(phoneErrors::setText)),
-                        Person::getPhone)
-                .bind(Handlers.messages(birthdayErrors::setText), Person::getBirthdayAsDate);
+                // simple binding - a normal use case
+                .bind(Handlers.messages(phoneErrors::setText), Person::getPhone)
+                // multi binding with chained handlers
+                .bind(Handlers.messages(nameErrors::setText).andThen(
+                                Handlers.styling(nameBox, "error")
+                        ), pojo -> {
+                            pojo.getFirstName();
+                            pojo.getLastName();
+                        }
+                )
+                // binding to fields in the entity object graph
+                .bind(Handlers.messages(carErrors::setText), pojo -> {
+                    pojo.getCar().getEngine();
+                    pojo.getCar().getPrice();
+                });
 
-        submit.disableProperty().bind(validator.isValidProperty().not());
 
         nextPerson();
 
@@ -82,11 +89,16 @@ public class DemoController implements Initializable {
         phone.textProperty().setValue(person.getPhone());
         birthday.setValue(person.getBirthday());
 
+        engine.setText(person.getCar().getEngine());
+        price.setText(person.getCar().getPrice());
+
         new Mapper<>(person)
                 .blur(firstName, firstName.textProperty(), person::setFirstName)
                 .blur(lastName, lastName.textProperty(), person::setLastName)
                 .change(phone.textProperty(), person::setPhone)
                 .change(birthday.valueProperty(), person::setBirthday)
+                .change(engine.textProperty(), person.getCar()::setEngine)
+                .change(price.textProperty(), person.getCar()::setPrice)
                 .setValidator(validator);
 
 
@@ -101,6 +113,12 @@ public class DemoController implements Initializable {
         person.setLastName("Hansen");
         person.setPhone("123-" + i);
         person.setBirthday(LocalDate.now());
+
+        Car car = new Car();
+        car.setEngine("V8");
+        car.setPrice("Expensive");
+
+        person.setCar(car);
         return person;
     }
 }

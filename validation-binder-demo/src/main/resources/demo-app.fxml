@@ -1,47 +1,62 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0"
-          prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
-          fx:controller="dk.kyuff.validation.binder.demo.DemoController">
+
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dk.kyuff.validation.binder.demo.DemoController">
     <style>
         .error {
         background-color: red;
         }
     </style>
     <columnConstraints>
-        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
-        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
-        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
     </columnConstraints>
     <rowConstraints>
-        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
-        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
-        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
-        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
-        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
     </rowConstraints>
     <children>
-        <Label fx:id="firstNameLabel" text="First Name"/>
-        <TextField fx:id="firstName" GridPane.columnIndex="1"/>
-        <Label fx:id="firstNameErrors" GridPane.columnIndex="2"/>
+        <Label text="Name" GridPane.rowIndex="0" />
+        <BorderPane fx:id="nameBox" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="0" GridPane.columnIndex="1">
+            <top>
+                <TextField fx:id="firstName" BorderPane.alignment="CENTER" />
+            </top>
+            <right>
+                <TextField fx:id="lastName" BorderPane.alignment="CENTER" />
+            </right>
+        </BorderPane>
+        <Label fx:id="nameErrors" GridPane.columnIndex="2" GridPane.rowIndex="0" />
+
+        <Label text="Title" GridPane.rowIndex="1" />
+        <TextField fx:id="phone" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+        <Label fx:id="phoneErrors" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+
+        <Label text="Birthday" GridPane.rowIndex="2" />
+        <DatePicker fx:id="birthday" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+        <Label fx:id="birthdayErrors" text="" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+
+        <Label text="Car" GridPane.rowIndex="3" />
+        <BorderPane prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="3" GridPane.columnIndex="1">
+            <top>
+                <TextField fx:id="engine" BorderPane.alignment="CENTER" />
+            </top>
+            <right>
+                <TextField fx:id="price" BorderPane.alignment="CENTER" />
+            </right>
+        </BorderPane>
+        <Label fx:id="carErrors" text="" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+
+        <Button fx:id="submit" mnemonicParsing="false" text="Save" GridPane.columnIndex="2" GridPane.rowIndex="4" />
+        <Button mnemonicParsing="false" onAction="#nextPerson" text="Next" GridPane.rowIndex="4" />
 
 
-        <Label fx:id="lastNameLabel" text="Last Name" GridPane.rowIndex="1"/>
-        <TextField fx:id="lastName" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
-        <Label fx:id="lastNameErrors" GridPane.columnIndex="2" GridPane.rowIndex="1"/>
-
-        <Label fx:id="phoneLabel" text="Title" GridPane.rowIndex="2"/>
-        <TextField fx:id="phone" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
-        <Label fx:id="phoneErrors" GridPane.columnIndex="2" GridPane.rowIndex="2"/>
-
-        <Label fx:id="birthdayLabel" text="Birthday" GridPane.rowIndex="3"/>
-        <DatePicker fx:id="birthday" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
-        <Label fx:id="birthdayErrors" text="" GridPane.columnIndex="2" GridPane.rowIndex="3"/>
-
-        <Button fx:id="submit" mnemonicParsing="false" text="Save" GridPane.columnIndex="2" GridPane.rowIndex="4"/>
-        <Button mnemonicParsing="false" onAction="#nextPerson" text="Next" GridPane.rowIndex="4"/>
 
     </children>
 </GridPane>

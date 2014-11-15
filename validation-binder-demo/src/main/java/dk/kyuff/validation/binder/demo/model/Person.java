@@ -1,5 +1,6 @@
-package dk.kyuff.validation.binder.demo;
+package dk.kyuff.validation.binder.demo.model;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
 import javax.validation.constraints.Pattern;
@@ -25,6 +26,9 @@ public class Person {
     @Pattern(regexp = "\\d{3}-\\d{4}", message = "match xxx-xxxx")
     private String phone;
     private LocalDate birthday;
+    @Valid
+    @NotNull
+    private Car car;
 
     @Past( message = "must be in the past")
     public Date getBirthdayAsDate() {
@@ -62,5 +66,13 @@ public class Person {
 
     public void setBirthday(LocalDate birthday) {
         this.birthday = birthday;
+    }
+
+    public Car getCar() {
+        return car;
+    }
+
+    public void setCar(Car car) {
+        this.car = car;
     }
 }
