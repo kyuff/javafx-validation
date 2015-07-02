@@ -92,6 +92,8 @@ public class DemoController implements Initializable {
         engine.setText(person.getCar().getEngine());
         price.setText(person.getCar().getPrice());
 
+        validator.setPristine(person);
+
         new Mapper<>(person)
                 .blur(firstName, firstName.textProperty(), person::setFirstName)
                 .blur(lastName, lastName.textProperty(), person::setLastName)

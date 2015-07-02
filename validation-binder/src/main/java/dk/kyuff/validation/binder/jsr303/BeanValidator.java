@@ -10,9 +10,7 @@ import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
@@ -27,11 +25,15 @@ public class BeanValidator<T> implements ValidationBinder<T> {
     private final HandlerMap<T> handlerMap;
     private final Recorder<T> recorder;
     private final SimpleBooleanProperty isValid;
+    private final Map<String, Object> pristineValues;
+
+    private List<Consumer<T>> binders;
 
     public BeanValidator(Class<T> validatedClass) {
         this.handlerMap = new HandlerMap<>();
         this.recorder = new Recorder<>(validatedClass);
-
+        this.pristineValues = new HashMap<>();
+        this.binders = new ArrayList<>();
         this.isValid = new SimpleBooleanProperty();
     }
 
@@ -40,7 +42,7 @@ public class BeanValidator<T> implements ValidationBinder<T> {
     }
 
     public Validator getValidator() {
-        if( validator == null ) {
+        if (validator == null) {
             ValidatorFactory validatorFactory = Validation.buildDefaultValidatorFactory();
             this.validator = validatorFactory.getValidator();
         }
@@ -53,6 +55,8 @@ public class BeanValidator<T> implements ValidationBinder<T> {
         }
         List<String> fields = recorder.record(binder);
         handlerMap.add(handler, fields);
+
+        binders.add(binder);
         return this;
     }
 
@@ -73,6 +77,15 @@ public class BeanValidator<T> implements ValidationBinder<T> {
         });
         return allViolations.isEmpty();
 
+    }
+
+    @Override
+    public void setPristine(T entity) {
+        pristineValues.clear();
+
+        for (Consumer<T> binder : binders) {
+            binder.accept(entity);
+        }
     }
 
     @Override

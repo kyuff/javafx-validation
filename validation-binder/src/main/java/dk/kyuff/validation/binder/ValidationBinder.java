@@ -37,4 +37,6 @@ public interface ValidationBinder<T> {
      * @return property to be listened to
      */
     ReadOnlyBooleanProperty isValidProperty();
+
+    void setPristine(T entity);
 }
